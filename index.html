@@ -3,21 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cofit 資料交接格式產生器</title>
+    <title>KOL營養師配對模板</title>
     <style>
         :root {
-            --primary-color: #5992C6;
+            --primary-color: #004f51; /* 品牌深綠色 */
+            --accent-color: #00797c;
             --warning-color: #d9534f;
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f4f7f6;
+            background-color: #f0f5f5;
             color: #333;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            padding-bottom: 40px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
         }
+        
+        /* 品牌花紋 Header 設計 */
+        .header-banner {
+            width: 100%;
+            background-color: var(--primary-color);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23003638' fill-opacity='0.4'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h2l-2 2V0zm0 4l4-4h2L40 6V4zm0 4l6-6h2L40 10V8zm0 4l8-8h2L40 14v-2zm0 4l10-10h2L40 18v-2zm0 4l12-12h2L40 22v-2zm0 4l14-14h2L40 26v-2zm0 4l16-16h2L40 30v-2zm0 4l18-18h2L40 34v-2zm0 4l20-20h2L40 38v-2zm0 4l22-22h2L40 42v-2zm0 4l24-24h2L40 46v-2zm0 4l26-26h2L40 50v-2zm0 4l28-28h2L40 54v-2zm0 4l30-30h2L40 58v-2zm0 4l32-32h2L40 62v-2zm0 4l34-34h2L40 66v-2zm0 4l36-36h2L40 70v-2zm0 4l38-38h2L40 74v-2zm0 4l40-40h2L40 78v-2zm-2 2l2-2v2h-2zM0 42h2L0 44v-2zm0 4l4-4h2L0 48v-2zm0 4l6-6h2L0 52v-2zm0 4l8-8h2L0 56v-2zm0 4l10-10h2L0 60v-2zm0 4l12-12h2L0 64v-2zm0 4l14-14h2L0 68v-2zm0 4l16-16h2L0 72v-2zm0 4l18-18h2L0 76v-2zm0 4l20-20h2L0 80v-2zm0 4l22-22h2V80h-2zm0 4l24-24h2V80h-2zm0 4l26-26h2V80h-2zm0 4l28-28h2V80h-2zm0 4l30-30h2V80h-2zm0 4l32-32h2V80h-2zm0 4l34-34h2V80h-2zm0 4l36-36h2V80h-2zm0 4l38-38h2V80h-2zm0 4l40-40h2V80h-2z'/%3E%3C/g%3E%3C/svg%3E");
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .header-banner h1 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
         .container {
             width: 100%;
             max-width: 650px;
@@ -25,33 +48,30 @@
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        h2 {
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 10px;
-            margin-top: 0;
+            box-sizing: border-box;
         }
         .section-title {
             font-weight: bold;
-            color: #4a4a4a;
-            margin: 20px 0 10px 0;
-            padding-top: 10px;
+            color: var(--primary-color);
+            margin: 25px 0 15px 0;
+            padding-top: 15px;
             border-top: 1px dashed #ccc;
+            font-size: 16px;
         }
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
+            margin-bottom: 6px;
+            font-weight: 600;
             font-size: 14px;
+            color: #444;
         }
-        input[type="text"], input[type="number"], input[type="datetime-local"], select, textarea {
+        input[type="text"], input[type="number"], select, textarea {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #bbb;
             border-radius: 4px;
             box-sizing: border-box;
             font-size: 14px;
@@ -59,19 +79,19 @@
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 5px rgba(89, 146, 198, 0.5);
+            box-shadow: 0 0 5px rgba(0, 79, 81, 0.3);
         }
         .warning-text {
             color: var(--warning-color);
-            font-size: 12px;
+            font-size: 13px;
             font-weight: bold;
-            margin-top: 5px;
+            margin-top: 6px;
         }
         .hidden {
             display: none;
         }
         .conditional-box {
-            background: #f9f9f9;
+            background: #f4f8f8;
             padding: 15px;
             border-left: 4px solid var(--primary-color);
             border-radius: 4px;
@@ -81,19 +101,19 @@
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 14px 20px;
             font-size: 16px;
             font-weight: bold;
             border-radius: 4px;
             cursor: pointer;
             width: 100%;
-            margin-top: 20px;
+            margin-top: 25px;
             transition: background 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .btn-submit:hover {
-            background-color: #4578a8;
+            background-color: var(--accent-color);
         }
-        /* 預覽與隱藏複製區 */
         #output {
             position: absolute;
             left: -9999px;
@@ -102,9 +122,11 @@
 </head>
 <body>
 
+<div class="header-banner">
+    <h1>KOL營養師配對模板</h1>
+</div>
+
 <div class="container">
-    <h2>Cofit 資料格式產生器</h2>
-    
     <div class="form-group">
         <label for="program">體驗方案：</label>
         <select id="program" onchange="toggleProgramDetails()">
@@ -117,7 +139,7 @@
         <div id="program-other-box" class="conditional-box hidden">
             <label for="program-note">備註欄位：</label>
             <input type="text" id="program-note" placeholder="請寫下方案名稱+導購項目">
-            <div class="warning-text">⚠️ 警語：請寫下方案名稱+導購項目</div>
+            <div class="warning-text">⚠️ 請寫下方案名稱+導購項目</div>
         </div>
     </div>
 
@@ -150,10 +172,10 @@
 
     <div class="form-group">
         <label for="time">預約時間：</label>
-        <input type="datetime-local" id="time">
+        <input type="text" id="time" placeholder="例如：5月25日 下午時段">
     </div>
 
-    <div class="section-title">身體數據</div>
+    <div class="section-title">📊 身體數據</div>
     
     <div class="form-group">
         <label for="age">年齡：</label>
@@ -180,7 +202,7 @@
         <input type="text" id="goal" placeholder="例如：減 5 kg 或 降體脂至 20%">
     </div>
 
-    <div class="section-title">歷史紀錄</div>
+    <div class="section-title">📋 歷史紀錄</div>
     
     <div class="form-group">
         <label for="history">是否曾參加Cofit課程：</label>
@@ -232,20 +254,13 @@
     }
 
     function generateAndCopy() {
-        // 1. 抓取方案邏輯
         let programValue = document.getElementById('program').value;
         if (programValue === '其他') {
             const note = document.getElementById('program-note').value;
             programValue = `其他（備註：${note}）`;
         }
 
-        // 2. 格式化時間
-        let timeValue = document.getElementById('time').value;
-        if(timeValue) {
-            timeValue = timeValue.replace('T', ' ');
-        }
-
-        // 3. 抓取數值
+        const timeValue = document.getElementById('time').value;
         const kol = document.getElementById('kol').value;
         const sns = document.getElementById('sns').value;
         const service = document.getElementById('service').value;
@@ -260,7 +275,6 @@
         
         const history = document.getElementById('history').value;
 
-        // 4. 組裝純文字模板 (嚴格控制換行與空格)
         let text = `體驗方案：${programValue}\n`;
         text += `KOL：${kol}\n`;
         text += `社群：${sns}\n\n`;
@@ -288,17 +302,16 @@
             text += `特殊狀況：${specialCondition}\n`;
         }
 
-        // 5. 執行複製到剪貼簿
         const outputTextArea = document.getElementById('output');
         outputTextArea.value = text.trim();
         outputTextArea.select();
-        outputTextArea.setSelectionRange(0, 99999); // 行動裝置相容
+        outputTextArea.setSelectionRange(0, 99999);
 
         try {
             document.execCommand('copy');
-            alert('🎉 格式化資料已成功複製到剪貼簿！可以直接貼給主管囉！');
+            alert('🎉 格式化資料已成功複製到剪貼簿！');
         } catch (err) {
-            alert('複製失敗，請手動全選複製。');
+            alert('複製失敗，請手動複製。');
         }
     }
 </script>
