@@ -68,7 +68,7 @@
             font-size: 14px;
             color: #444;
         }
-        input[type="text"], input[type="number"], select, textarea {
+        input[type="text"], select, textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #bbb;
@@ -97,6 +97,21 @@
             border-radius: 4px;
             margin-top: 10px;
         }
+        
+        /* 預覽區塊樣式 */
+        .preview-box {
+            background-color: #f7f9f9;
+            border: 1px solid #d1dada;
+            border-radius: 6px;
+            padding: 20px;
+            margin-top: 15px;
+            white-space: pre-wrap; /* 保留換行 */
+            font-family: monospace;
+            font-size: 14px;
+            color: #2c3e50;
+            line-height: 1.5;
+        }
+        
         .btn-submit {
             background-color: var(--primary-color);
             color: white;
@@ -107,16 +122,12 @@
             border-radius: 4px;
             cursor: pointer;
             width: 100%;
-            margin-top: 25px;
+            margin-top: 15px;
             transition: background 0.2s;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .btn-submit:hover {
             background-color: var(--accent-color);
-        }
-        #output {
-            position: absolute;
-            left: -9999px;
         }
     </style>
 </head>
@@ -127,194 +138,3 @@
 </div>
 
 <div class="container">
-    <div class="form-group">
-        <label for="program">體驗方案：</label>
-        <select id="program" onchange="toggleProgramDetails()">
-            <option value="體驗8週＋導一對一（國際中文）">體驗8週＋導一對一（國際中文）</option>
-            <option value="體驗4週＋導一對一（國際中文）">體驗4週＋導一對一（國際中文）</option>
-            <option value="體驗8週＋導一對一（Flex8 Slim Program）">體驗8週＋導一對一（Flex8 Slim Program）</option>
-            <option value="體驗4週＋導一對一（Flex8 Slim Program）">體驗4週＋導一對一（Flex8 Slim Program）</option>
-            <option value="其他">其他</option>
-        </select>
-        <div id="program-other-box" class="conditional-box hidden">
-            <label for="program-note">備註欄位：</label>
-            <input type="text" id="program-note" placeholder="請寫下方案名稱+導購項目">
-            <div class="warning-text">⚠️ 請寫下方案名稱+導購項目</div>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="kol">KOL：</label>
-        <input type="text" id="kol" placeholder="請輸入 KOL 名稱">
-    </div>
-
-    <div class="form-group">
-        <label for="sns">社群：</label>
-        <input type="text" id="sns" placeholder="如：Instagram, Facebook, YouTube">
-    </div>
-
-    <div class="form-group">
-        <label for="service">體驗服務：</label>
-        <select id="service">
-            <option value="營養師一對一體態與飲食分析 (粵語)">營養師一對一體態與飲食分析 (粵語)</option>
-            <option value="營養師一對一體態與飲食分析 (普通話)">營養師一對一體態與飲食分析 (普通話)</option>
-            <option value="營養師一對一體態與飲食分析 (英文)">營養師一對一體態與飲食分析 (英文)</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="location">預約地點：</label>
-        <select id="location">
-            <option value="線上">線上</option>
-            <option value="實體（台北）">實體（台北）</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="time">預約時間：</label>
-        <input type="text" id="time" placeholder="例如：5月25日 下午時段">
-    </div>
-
-    <div class="section-title">📊 身體數據</div>
-    
-    <div class="form-group">
-        <label for="age">年齡：</label>
-        <input type="number" id="age" placeholder="例如：28">
-    </div>
-    <div class="form-group">
-        <label for="height">身高 (cm)：</label>
-        <input type="number" id="height" step="0.1" placeholder="例如：165">
-    </div>
-    <div class="form-group">
-        <label for="weight">體重 (kg)：</label>
-        <input type="number" id="weight" step="0.1" placeholder="例如：60">
-    </div>
-    <div class="form-group">
-        <label for="bmi">BMI：</label>
-        <input type="number" id="bmi" step="0.1" placeholder="例如：22.0">
-    </div>
-    <div class="form-group">
-        <label for="fat">體脂肪 (%)：</label>
-        <input type="number" id="fat" step="0.1" placeholder="例如：26.5">
-    </div>
-    <div class="form-group">
-        <label for="goal">減重目標：</label>
-        <input type="text" id="goal" placeholder="例如：減 5 kg 或 降體脂至 20%">
-    </div>
-
-    <div class="section-title">📋 歷史紀錄</div>
-    
-    <div class="form-group">
-        <label for="history">是否曾參加Cofit課程：</label>
-        <select id="history" onchange="toggleHistoryDetails()">
-            <option value="無">無</option>
-            <option value="有">有</option>
-        </select>
-        
-        <div id="history-box" class="conditional-box hidden">
-            <div class="form-group">
-                <label for="prev-date">前體驗日期：</label>
-                <input type="text" id="prev-date" placeholder="請寫下年份+月份，如：2025年10月">
-            </div>
-            <div class="form-group">
-                <label for="prev-dietitian">前營養師名字：</label>
-                <input type="text" id="prev-dietitian">
-            </div>
-            <div class="form-group">
-                <label for="special-condition">特殊狀況：</label>
-                <textarea id="special-condition" rows="2"></textarea>
-            </div>
-        </div>
-    </div>
-
-    <button class="btn-submit" onclick="generateAndCopy()">一鍵複製標準格式資料</button>
-</div>
-
-<textarea id="output"></textarea>
-
-<script>
-    function toggleProgramDetails() {
-        const program = document.getElementById('program').value;
-        const otherBox = document.getElementById('program-other-box');
-        if (program === '其他') {
-            otherBox.classList.remove('hidden');
-        } else {
-            otherBox.classList.add('hidden');
-        }
-    }
-
-    function toggleHistoryDetails() {
-        const history = document.getElementById('history').value;
-        const historyBox = document.getElementById('history-box');
-        if (history === '有') {
-            historyBox.classList.remove('hidden');
-        } else {
-            historyBox.classList.add('hidden');
-        }
-    }
-
-    function generateAndCopy() {
-        let programValue = document.getElementById('program').value;
-        if (programValue === '其他') {
-            const note = document.getElementById('program-note').value;
-            programValue = `其他（備註：${note}）`;
-        }
-
-        const timeValue = document.getElementById('time').value;
-        const kol = document.getElementById('kol').value;
-        const sns = document.getElementById('sns').value;
-        const service = document.getElementById('service').value;
-        const location = document.getElementById('location').value;
-        
-        const age = document.getElementById('age').value;
-        const height = document.getElementById('height').value;
-        const weight = document.getElementById('weight').value;
-        const bmi = document.getElementById('bmi').value;
-        const fat = document.getElementById('fat').value;
-        const goal = document.getElementById('goal').value;
-        
-        const history = document.getElementById('history').value;
-
-        let text = `體驗方案：${programValue}\n`;
-        text += `KOL：${kol}\n`;
-        text += `社群：${sns}\n\n`;
-        text += `體驗服務：${service}\n`;
-        text += `預約地點：${location}\n`;
-        text += `預約時間：${timeValue}\n`;
-        text += `———————————————————\n`;
-        text += `身體數據\n\n`;
-        text += `年齡：${age ? age + ' 歲' : ''}\n`;
-        text += `身高：${height ? height + ' cm' : ''}\n`;
-        text += `體重：${weight ? weight + ' kg' : ''}\n`;
-        text += `BMI：${bmi}\n`;
-        text += `體脂肪：${fat ? fat + ' %' : ''}\n`;
-        text += `減重目標：${goal}\n`;
-        text += `———————————————————\n`;
-        text += `是否曾參加Cofit課程：${history}\n`;
-
-        if (history === '有') {
-            const prevDate = document.getElementById('prev-date').value;
-            const prevDietitian = document.getElementById('prev-dietitian').value;
-            const specialCondition = document.getElementById('special-condition').value;
-            
-            text += `前體驗日期：${prevDate}\n`;
-            text += `前營養師名字：${prevDietitian}\n`;
-            text += `特殊狀況：${specialCondition}\n`;
-        }
-
-        const outputTextArea = document.getElementById('output');
-        outputTextArea.value = text.trim();
-        outputTextArea.select();
-        outputTextArea.setSelectionRange(0, 99999);
-
-        try {
-            document.execCommand('copy');
-            alert('🎉 格式化資料已成功複製到剪貼簿！');
-        } catch (err) {
-            alert('複製失敗，請手動複製。');
-        }
-    }
-</script>
-
-</body>
-</html>
