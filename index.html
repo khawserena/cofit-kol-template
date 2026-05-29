@@ -9,6 +9,7 @@
             --primary-color: #004f51; /* 品牌深綠色 */
             --accent-color: #00797c;
             --warning-color: #d9534f;
+            --info-color: #f0ad4e;
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -68,7 +69,7 @@
             font-size: 14px;
             color: #444;
         }
-        input[type="text"], select, textarea {
+        input[type="text"], input[type="number"], input[type="date"], select, textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #bbb;
@@ -87,6 +88,16 @@
             font-weight: bold;
             margin-top: 6px;
         }
+        .info-text {
+            color: #d97706;
+            background-color: #fef3c7;
+            border-left: 3px solid #f59e0b;
+            padding: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-top: 6px;
+            border-radius: 0 4px 4px 0;
+        }
         .hidden {
             display: none;
         }
@@ -98,6 +109,54 @@
             margin-top: 10px;
         }
         
+        /* 動態多頁籤切換樣式 */
+        .tabs-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ddd;
+        }
+        .tab-btn {
+            background: #e5e7eb;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 4px 4px 0 0;
+            margin-right: 4px;
+            color: #666;
+        }
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        .add-person-btn {
+            background: #059669;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            margin-left: auto;
+        }
+        .add-person-btn:hover {
+            background: #047857;
+        }
+        .remove-person-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 2px 6px;
+            margin-left: 8px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+
         /* 預覽區塊樣式 */
         .preview-box {
             background-color: #f7f9f9;
@@ -105,7 +164,7 @@
             border-radius: 6px;
             padding: 20px;
             margin-top: 15px;
-            white-space: pre-wrap; /* 保留換行 */
+            white-space: pre-wrap;
             font-family: monospace;
             font-size: 14px;
             color: #2c3e50;
@@ -150,7 +209,7 @@
         <div id="program-other-box" class="conditional-box hidden">
             <label for="program-note">備註欄位：</label>
             <input type="text" id="program-note" oninput="updateAll()" placeholder="請寫下方案名稱+導購項目">
-            <div class="warning-text">⚠️ 請寫下體驗方案名稱+導購項目</div>
+            <div class="warning-text">⚠️ 請寫下方案名稱+導購項目</div>
         </div>
     </div>
 
@@ -186,54 +245,68 @@
         <input type="text" id="time" oninput="updateAll()" placeholder="例如：5月25日 下午時段">
     </div>
 
-    <div class="section-title">📊 身體數據</div>
-    
     <div class="form-group">
-        <label for="age">年齡：</label>
-        <input type="text" id="age" oninput="updateAll()" placeholder="例如：28 或 28歲">
-    </div>
-    <div class="form-group">
-        <label for="height">身高：</label>
-        <input type="text" id="height" oninput="updateAll()" placeholder="例如：165 或 165cm">
-    </div>
-    <div class="form-group">
-        <label for="weight">體重：</label>
-        <input type="text" id="weight" oninput="updateAll()" placeholder="例如：60 或 60kg">
-    </div>
-    <div class="form-group">
-        <label for="bmi">BMI：</label>
-        <input type="text" id="bmi" oninput="updateAll()" placeholder="例如：22.0">
-    </div>
-    <div class="form-group">
-        <label for="fat">體脂肪：</label>
-        <input type="text" id="fat" oninput="updateAll()" placeholder="例如：26.5 或 26.5%">
-    </div>
-    <div class="form-group">
-        <label for="goal">減重目標：</label>
-        <input type="text" id="goal" oninput="updateAll()" placeholder="例如：減 5 kg 或 降體脂至 20%">
+        <label for="class-date">預計進班時間：</label>
+        <input type="date" id="class-date" onchange="checkMonday(); updateAll();">
+        <div id="monday-warning" class="info-text hidden"></div>
     </div>
 
-    <div class="section-title">📋 歷史紀錄</div>
-    
-    <div class="form-group">
-        <label for="history">是否曾參加Cofit課程：</label>
-        <select id="history" onchange="updateAll()">
-            <option value="無">無</option>
-            <option value="有">有</option>
-        </select>
-        
-        <div id="history-box" class="conditional-box hidden">
-            <div class="form-group">
-                <label for="prev-date">前體驗日期：</label>
-                <input type="text" id="prev-date" oninput="updateAll()" placeholder="請寫下年份+月份，如：2025年10月">
-            </div>
-            <div class="form-group">
-                <label for="prev-dietitian">前營養師名字：</label>
-                <input type="text" id="prev-dietitian" oninput="updateAll()">
-            </div>
-            <div class="form-group">
-                <label for="special-condition">特殊狀況：</label>
-                <textarea id="special-condition" oninput="updateAll()" rows="2"></textarea>
+    <div class="section-title" style="display: flex; align-items: center;">
+        <span>👥 體驗者身體數據與紀錄</span>
+        <button class="add-person-btn" onclick="addPerson()">＋ 增加體驗者人數</button>
+    </div>
+
+    <div class="tabs-container" id="tabs-header">
+        </div>
+
+    <div id="person-form-container">
+        <div class="form-group">
+            <label>體驗者姓名 / 代稱：</label>
+            <input type="text" id="p-name" oninput="saveCurrentPersonData(); updateAll();" placeholder="可填寫姓名，多人時必填以利區分">
+        </div>
+        <div class="form-group">
+            <label>年齡：</label>
+            <input type="text" id="p-age" oninput="saveCurrentPersonData(); updateAll();" placeholder="例如：28">
+        </div>
+        <div class="form-group">
+            <label>身高：</label>
+            <input type="text" id="p-height" oninput="saveCurrentPersonData(); updateAll();" placeholder="例如：165 或 165cm">
+        </div>
+        <div class="form-group">
+            <label>體重：</label>
+            <input type="text" id="p-weight" oninput="saveCurrentPersonData(); updateAll();" placeholder="例如：60 或 60kg">
+        </div>
+        <div class="form-group">
+            <label>BMI：</label>
+            <input type="text" id="p-bmi" oninput="saveCurrentPersonData(); updateAll();" placeholder="例如：22.0">
+        </div>
+        <div class="form-group">
+            <label>體脂肪：</label>
+            <input type="text" id="p-fat" oninput="saveCurrentPersonData(); updateAll();" placeholder="例如：26.5 或 26.5%">
+        </div>
+        <div class="form-group">
+            <label>減重目標：</label>
+            <input type="text" id="p-goal" oninput="saveCurrentPersonData(); updateAll();" placeholder="例如：減 5 kg">
+        </div>
+        <div class="form-group">
+            <label>是否曾參加Cofit課程：</label>
+            <select id="p-history" onchange="saveCurrentPersonData(); updateAll();">
+                <option value="無">無</option>
+                <option value="有">有</option>
+            </select>
+            <div id="p-history-box" class="conditional-box hidden">
+                <div class="form-group">
+                    <label>前體驗日期：</label>
+                    <input type="text" id="p-prev-date" oninput="saveCurrentPersonData(); updateAll();" placeholder="請寫下年份+月份，如：2025年10月">
+                </div>
+                <div class="form-group">
+                    <label>前營養師名字：</label>
+                    <input type="text" id="p-prev-dietitian" oninput="saveCurrentPersonData(); updateAll();">
+                </div>
+                <div class="form-group">
+                    <label>特殊狀況：</label>
+                    <textarea id="p-special-condition" oninput="saveCurrentPersonData(); updateAll();" rows="2"></textarea>
+                </div>
             </div>
         </div>
     </div>
@@ -245,30 +318,146 @@
 </div>
 
 <script>
-    // 負責處理所有連動與即時預覽
-    function updateAll() {
-        // 處理動態欄位顯示
-        const program = document.getElementById('program').value;
-        const otherBox = document.getElementById('program-other-box');
-        if (program === '其他') {
-            otherBox.classList.remove('hidden');
-        } else {
-            otherBox.classList.add('hidden');
-        }
+    // 多人資料庫架構
+    let peopleList = [
+        { id: 1, name: '', age: '', height: '', weight: '', bmi: '', fat: '', goal: '', history: '無', prevDate: '', prevDietitian: '', specialCondition: '' }
+    ];
+    let currentActiveTabId = 1;
 
-        const history = document.getElementById('history').value;
-        const historyBox = document.getElementById('history-box');
-        if (history === '有') {
+    // 週一防呆檢查
+    function checkMonday() {
+        const dateInput = document.getElementById('class-date').value;
+        const warningBox = document.getElementById('monday-warning');
+        if (!dateInput) {
+            warningBox.classList.add('hidden');
+            return;
+        }
+        
+        const dateObj = new Date(dateInput);
+        const dayOfWeek = dateObj.getDay(); // 0 是週日，1 是週一，6 是週六
+        const weekdayNames = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+        
+        if (dayOfWeek !== 1) {
+            warningBox.innerText = `⚠️ 注意：Cofit 規定為每週一進班。您選擇的日期是 ${dateInput} (${weekdayNames[dayOfWeek]})，請確認是否正確！`;
+            warningBox.classList.remove('hidden');
+        } else {
+            warningBox.classList.add('hidden');
+        }
+    }
+
+    // 渲染頁籤按鈕
+    function renderTabs() {
+        const header = document.getElementById('tabs-header');
+        header.innerHTML = '';
+        peopleList.forEach((person, index) => {
+            const btn = document.createElement('button');
+            btn.className = `tab-btn ${person.id === currentActiveTabId ? 'active' : ''}`;
+            btn.type = 'button';
+            btn.onclick = () => switchTab(person.id);
+            
+            const displayName = person.name ? person.name : `體驗者 ${index + 1}`;
+            btn.innerText = displayName;
+
+            // 超過1人時，允許刪除後面的體驗者
+            if (peopleList.length > 1) {
+                const removeBtn = document.createElement('span');
+                removeBtn.innerText = '×';
+                removeBtn.className = 'remove-person-btn';
+                removeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    removePerson(person.id);
+                };
+                btn.appendChild(removeBtn);
+            }
+            header.appendChild(btn);
+        });
+    }
+
+    // 新增人數
+    function addPerson() {
+        if (peopleList.length >= 5) {
+            alert('最多填寫 5 位體驗者');
+            return;
+        }
+        const newId = Date.now(); // 產生唯一ID
+        peopleList.push({ id: newId, name: '', age: '', height: '', weight: '', bmi: '', fat: '', goal: '', history: '無', prevDate: '', prevDietitian: '', specialCondition: '' });
+        switchTab(newId);
+    }
+
+    // 刪除人數
+    function removePerson(id) {
+        peopleList = peopleList.filter(p => p.id !== id);
+        if (currentActiveTabId === id) {
+            currentActiveTabId = peopleList[0].id;
+        }
+        switchTab(currentActiveTabId);
+    }
+
+    // 切換頁籤
+    function switchTab(id) {
+        saveCurrentPersonData(); // 先儲存舊頁籤資料
+        currentActiveTabId = id;
+        renderTabs();
+        loadPersonData(id);
+        updateAll();
+    }
+
+    // 把當前畫面上的數值存回資料庫
+    function saveCurrentPersonData() {
+        const person = peopleList.find(p => p.id === currentActiveTabId);
+        if (!person) return;
+
+        person.name = document.getElementById('p-name').value;
+        person.age = document.getElementById('p-age').value;
+        person.height = document.getElementById('p-height').value;
+        person.weight = document.getElementById('p-weight').value;
+        person.bmi = document.getElementById('p-bmi').value;
+        person.fat = document.getElementById('p-fat').value;
+        person.goal = document.getElementById('p-goal').value;
+        person.history = document.getElementById('p-history').value;
+        person.prevDate = document.getElementById('p-prev-date').value;
+        person.prevDietitian = document.getElementById('p-prev-dietitian').value;
+        person.specialCondition = document.getElementById('p-special-condition').value;
+    }
+
+    // 把資料庫的數值搬到網頁畫面上
+    function loadPersonData(id) {
+        const person = peopleList.find(p => p.id === id);
+        if (!person) return;
+
+        document.getElementById('p-name').value = person.name;
+        document.getElementById('p-age').value = person.age;
+        document.getElementById('p-height').value = person.height;
+        document.getElementById('p-weight').value = person.weight;
+        document.getElementById('p-bmi').value = person.bmi;
+        document.getElementById('p-fat').value = person.fat;
+        document.getElementById('p-goal').value = person.goal;
+        document.getElementById('p-history').value = person.history;
+        document.getElementById('p-prev-date').value = person.prevDate;
+        document.getElementById('p-prev-dietitian').value = person.prevDietitian;
+        document.getElementById('p-special-condition').value = person.specialCondition;
+
+        // 控制歷史紀錄動態顯示
+        const historyBox = document.getElementById('p-history-box');
+        if (person.history === '有') {
             historyBox.classList.remove('hidden');
         } else {
             historyBox.classList.add('hidden');
         }
+    }
 
-        // 組裝純文字
+    // 負責彙整、處理所有連動與即時預覽
+    function updateAll() {
+        // 基本資料方案判斷
+        const program = document.getElementById('program').value;
+        const otherBox = document.getElementById('program-other-box');
         let programValue = program;
         if (program === '其他') {
+            otherBox.classList.remove('hidden');
             const note = document.getElementById('program-note').value;
             programValue = `其他（備註：${note}）`;
+        } else {
+            otherBox.classList.add('hidden');
         }
 
         const kol = document.getElementById('kol').value;
@@ -276,50 +465,46 @@
         const service = document.getElementById('service').value;
         const location = document.getElementById('location').value;
         const timeValue = document.getElementById('time').value;
-        
-        const age = document.getElementById('age').value;
-        const height = document.getElementById('height').value;
-        const weight = document.getElementById('weight').value;
-        const bmi = document.getElementById('bmi').value;
-        const fat = document.getElementById('fat').value;
-        const goal = document.getElementById('goal').value;
+        const classDate = document.getElementById('class-date').value;
 
+        // 開始組裝純文字上半部
         let text = `體驗方案：${programValue}\n`;
         text += `KOL：${kol}\n`;
         text += `社群：${sns}\n\n`;
         text += `體驗服務：${service}\n`;
         text += `預約地點：${location}\n`;
         text += `預約時間：${timeValue}\n`;
-        text += `———————————————————\n`;
-        text += `身體數據\n\n`;
-        text += `年齡：${age}\n`;
-        text += `身高：${height}\n`;
-        text += `體重：${weight}\n`;
-        text += `BMI：${bmi}\n`;
-        text += `體脂肪：${fat}\n`;
-        text += `減重目標：${goal}\n`;
-        text += `———————————————————\n`;
-        text += `是否曾參加Cofit課程：${history}\n`;
+        text += `預計進班時間：${classDate}\n`;
 
-        if (history === '有') {
-            const prevDate = document.getElementById('prev-date').value;
-            const prevDietitian = document.getElementById('prev-dietitian').value;
-            const specialCondition = document.getElementById('special-condition').value;
-            
-            text += `前體驗日期：${prevDate}\n`;
-            text += `前營養師名字：${prevDietitian}\n`;
-            text += `特殊狀況：${specialCondition}\n`;
-        }
+        // 核心：動態彙整多位填寫者的身體數據
+        peopleList.forEach((p, idx) => {
+            const pLabel = p.name ? ` (${p.name})` : (peopleList.length > 1 ? ` (第 ${idx+1} 位)` : '');
+            text += `———————————————————\n`;
+            text += `身體數據${pLabel}\n\n`;
+            text += `年齡：${p.age}\n`;
+            text += `身高：${p.height}\n`;
+            text += `體重：${p.weight}\n`;
+            text += `BMI：${p.bmi}\n`;
+            text += `體脂肪：${p.fat}\n`;
+            text += `減重目標：${p.goal}\n`;
+            text += `———————————————————\n`;
+            text += `是否曾參加Cofit課程${pLabel}：${p.history}\n`;
 
-        // 將組裝好的文字丟到預覽區塊中
+            if (p.history === '有') {
+                text += `前體驗日期：${p.prevDate}\n`;
+                text += `前營養師名字：${p.prevDietitian}\n`;
+                text += `特殊狀況：${p.specialCondition}\n`;
+            }
+        });
+
         document.getElementById('realtime-preview').innerText = text.trim();
     }
 
-    // 按鈕複製功能
     function copyToClipboard() {
-        const textToCopy = document.getElementById('realtime-preview').innerText;
+        saveCurrentPersonData(); // 確保最後點擊按鈕時有抓到當前分頁資料
+        updateAll();
         
-        // 建立臨時 textarea 來執行複製
+        const textToCopy = document.getElementById('realtime-preview').innerText;
         const tempTextArea = document.createElement('textarea');
         tempTextArea.value = textToCopy;
         document.body.appendChild(tempTextArea);
@@ -335,8 +520,12 @@
         document.body.removeChild(tempTextArea);
     }
 
-    // 網頁載入時先執行一次，把初始狀態秀出來
-    window.onload = updateAll;
+    // 初始化網頁
+    window.onload = function() {
+        renderTabs();
+        loadPersonData(1);
+        updateAll();
+    };
 </script>
 
 </body>
