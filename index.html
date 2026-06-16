@@ -51,6 +51,18 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             box-sizing: border-box;
         }
+        
+        /* 雙欄並排的表單樣式 */
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
         .section-title {
             font-weight: bold;
             color: var(--primary-color);
@@ -197,6 +209,22 @@
 </div>
 
 <div class="container">
+    
+    <div class="form-row">
+        <div class="form-group">
+            <label for="dev-pm">開發 PM：</label>
+            <select id="dev-pm" onchange="updateAll()">
+                <option value="王均">王均</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="ops-pm">經營 PM：</label>
+            <select id="ops-pm" onchange="updateAll()">
+                <option value="Serena">Serena</option>
+            </select>
+        </div>
+    </div>
+
     <div class="form-group">
         <label for="program">體驗方案：</label>
         <select id="program" onchange="updateAll()">
@@ -318,7 +346,6 @@
 </div>
 
 <script>
-    // 多人資料庫架構
     let peopleList = [
         { id: 1, name: '', age: '', height: '', weight: '', bmi: '', fat: '', goal: '', history: '無', prevDate: '', prevDietitian: '', specialCondition: '' }
     ];
@@ -334,7 +361,7 @@
         }
         
         const dateObj = new Date(dateInput);
-        const dayOfWeek = dateObj.getDay(); // 0 是週日，1 是週一，6 是週六
+        const dayOfWeek = dateObj.getDay(); 
         const weekdayNames = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
         
         if (dayOfWeek !== 1) {
@@ -345,7 +372,6 @@
         }
     }
 
-    // 渲染頁籤按鈕
     function renderTabs() {
         const header = document.getElementById('tabs-header');
         header.innerHTML = '';
@@ -358,7 +384,6 @@
             const displayName = person.name ? person.name : `體驗者 ${index + 1}`;
             btn.innerText = displayName;
 
-            // 超過1人時，允許刪除後面的體驗者
             if (peopleList.length > 1) {
                 const removeBtn = document.createElement('span');
                 removeBtn.innerText = '×';
@@ -373,18 +398,16 @@
         });
     }
 
-    // 新增人數
     function addPerson() {
         if (peopleList.length >= 5) {
             alert('最多填寫 5 位體驗者');
             return;
         }
-        const newId = Date.now(); // 產生唯一ID
+        const newId = Date.now();
         peopleList.push({ id: newId, name: '', age: '', height: '', weight: '', bmi: '', fat: '', goal: '', history: '無', prevDate: '', prevDietitian: '', specialCondition: '' });
         switchTab(newId);
     }
 
-    // 刪除人數
     function removePerson(id) {
         peopleList = peopleList.filter(p => p.id !== id);
         if (currentActiveTabId === id) {
@@ -393,16 +416,14 @@
         switchTab(currentActiveTabId);
     }
 
-    // 切換頁籤
     function switchTab(id) {
-        saveCurrentPersonData(); // 先儲存舊頁籤資料
+        saveCurrentPersonData();
         currentActiveTabId = id;
         renderTabs();
         loadPersonData(id);
         updateAll();
     }
 
-    // 把當前畫面上的數值存回資料庫
     function saveCurrentPersonData() {
         const person = peopleList.find(p => p.id === currentActiveTabId);
         if (!person) return;
@@ -420,7 +441,6 @@
         person.specialCondition = document.getElementById('p-special-condition').value;
     }
 
-    // 把資料庫的數值搬到網頁畫面上
     function loadPersonData(id) {
         const person = peopleList.find(p => p.id === id);
         if (!person) return;
@@ -437,7 +457,6 @@
         document.getElementById('p-prev-dietitian').value = person.prevDietitian;
         document.getElementById('p-special-condition').value = person.specialCondition;
 
-        // 控制歷史紀錄動態顯示
         const historyBox = document.getElementById('p-history-box');
         if (person.history === '有') {
             historyBox.classList.remove('hidden');
@@ -446,9 +465,11 @@
         }
     }
 
-    // 負責彙整、處理所有連動與即時預覽
     function updateAll() {
-        // 基本資料方案判斷
+        // PM 欄位資料抓取
+        const devPm = document.getElementById('dev-pm').value;
+        const opsPm = document.getElementById('ops-pm').value;
+
         const program = document.getElementById('program').value;
         const otherBox = document.getElementById('program-other-box');
         let programValue = program;
@@ -467,8 +488,9 @@
         const timeValue = document.getElementById('time').value;
         const classDate = document.getElementById('class-date').value;
 
-        // 開始組裝純文字上半部
-        let text = `體驗方案：${programValue}\n`;
+        // 👇 關鍵排列：將 開發PM 與 經營PM 併排在第一列呈現
+        let text = `開發PM：${devPm}   經營PM：${opsPm}\n`;
+        text += `體驗方案：${programValue}\n`;
         text += `KOL：${kol}\n`;
         text += `社群：${sns}\n\n`;
         text += `體驗服務：${service}\n`;
@@ -476,7 +498,6 @@
         text += `預約時間：${timeValue}\n`;
         text += `預計進班時間：${classDate}\n`;
 
-        // 核心：動態彙整多位填寫者的身體數據
         peopleList.forEach((p, idx) => {
             const pLabel = p.name ? ` (${p.name})` : (peopleList.length > 1 ? ` (第 ${idx+1} 位)` : '');
             text += `———————————————————\n`;
@@ -497,11 +518,14 @@
             }
         });
 
+        // 固定呈現的最後一行文字
+        text += `\n這裡可以輸入您想固定呈現的文字內容`;
+
         document.getElementById('realtime-preview').innerText = text.trim();
     }
 
     function copyToClipboard() {
-        saveCurrentPersonData(); // 確保最後點擊按鈕時有抓到當前分頁資料
+        saveCurrentPersonData();
         updateAll();
         
         const textToCopy = document.getElementById('realtime-preview').innerText;
@@ -520,7 +544,6 @@
         document.body.removeChild(tempTextArea);
     }
 
-    // 初始化網頁
     window.onload = function() {
         renderTabs();
         loadPersonData(1);
