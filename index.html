@@ -210,6 +210,7 @@
 
 <div class="container">
     
+    <!-- 👥 PM 人員設定選單 -->
     <div class="form-row">
         <div class="form-group">
             <label for="dev-pm">開發 PM：</label>
@@ -225,6 +226,7 @@
         </div>
     </div>
 
+    <!-- 基本資料 -->
     <div class="form-group">
         <label for="program">體驗方案：</label>
         <select id="program" onchange="updateAll()">
@@ -279,14 +281,17 @@
         <div id="monday-warning" class="info-text hidden"></div>
     </div>
 
+    <!-- 動態頁籤管理區 -->
     <div class="section-title" style="display: flex; align-items: center;">
         <span>👥 體驗者身體數據與紀錄</span>
         <button class="add-person-btn" onclick="addPerson()">＋ 增加體驗者人數</button>
     </div>
 
     <div class="tabs-container" id="tabs-header">
-        </div>
+        <!-- 頁籤按鈕會由 JS 動態產生 -->
+    </div>
 
+    <!-- 動態填寫內容區 -->
     <div id="person-form-container">
         <div class="form-group">
             <label>體驗者姓名 / 代稱：</label>
@@ -339,6 +344,7 @@
         </div>
     </div>
 
+    <!-- 即時預覽區塊 -->
     <div class="section-title">👀 格式文字即時預覽（可直接滑鼠選取複製）</div>
     <div id="realtime-preview" class="preview-box"></div>
 
@@ -488,9 +494,8 @@
         const timeValue = document.getElementById('time').value;
         const classDate = document.getElementById('class-date').value;
 
-        // 👇 關鍵排列：將 開發PM 與 經營PM 併排在第一列呈現
-        let text = `開發PM：${devPm}   經營PM：${opsPm}\n`;
-        text += `體驗方案：${programValue}\n`;
+        // 🌟 第一行維持輸出：體驗方案
+        let text = `體驗方案：${programValue}\n`;
         text += `KOL：${kol}\n`;
         text += `社群：${sns}\n\n`;
         text += `體驗服務：${service}\n`;
@@ -518,8 +523,8 @@
             }
         });
 
-        // 固定呈現的最後一行文字
-        text += `\n這裡可以輸入您想固定呈現的文字內容`;
+        // 👇 關鍵修改：將原固定文字的位置，直接替換成 PM 併排資訊，放在最下面一行
+        text += `\n開發PM：${devPm}   經營PM：${opsPm}`;
 
         document.getElementById('realtime-preview').innerText = text.trim();
     }
